@@ -20,8 +20,7 @@ import (
 	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/go-multierror"
 	"github.com/hashicorp/logutils"
-	"github.com/mitchellh/colorstring"
-
+	"github.com/hashicorp/terraform-plugin-sdk/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/logging"
 	"github.com/hashicorp/terraform-plugin-sdk/internal/addrs"
 	"github.com/hashicorp/terraform-plugin-sdk/internal/command/format"
@@ -32,6 +31,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/internal/states"
 	"github.com/hashicorp/terraform-plugin-sdk/internal/tfdiags"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/mitchellh/colorstring"
 )
 
 // flagSweep is a flag available when running tests on the command line. It
@@ -108,6 +108,9 @@ func TestMain(m *testing.M) {
 			os.Exit(1)
 		}
 	} else {
+		if acctest.TestHelper != nil {
+			defer acctest.TestHelper.Close()
+		}
 		os.Exit(m.Run())
 	}
 }
@@ -191,8 +194,13 @@ func filterSweepers(f string, source map[string]*Sweeper) map[string]*Sweeper {
 // Since filterSweepers performs fuzzy matching, this function is used
 // to perform exact sweeper and dependency lookup.
 func filterSweeperWithDependencies(name string, source map[string]*Sweeper) map[string]*Sweeper {
-	currentSweeper := source[name]
 	result := make(map[string]*Sweeper)
+
+	currentSweeper, ok := source[name]
+	if !ok {
+		log.Printf("[DEBUG] Sweeper has dependency (%s), but that sweeper was not found", name)
+		return result
+	}
 
 	result[name] = currentSweeper
 
@@ -557,6 +565,12 @@ func Test(t TestT, c TestCase) {
 			t.Fatal(err)
 		}
 		providers[name] = p
+	}
+
+	if acctest.TestHelper != nil {
+		// inject providers for ImportStateVerify
+		RunLegacyTest(t.(*testing.T), c, providers)
+		return
 	}
 
 	providerResolver, err := testProviderResolver(c)
