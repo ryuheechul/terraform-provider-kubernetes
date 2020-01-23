@@ -88,6 +88,9 @@ func getTerraformEnv() []string {
 		env = append(env, e)
 	}
 
+	env = append(env, "TF_SKIP_PROVIDER_VERIFY=1")
+	env = append(env, "TF_DISABLE_PLUGIN_TLS=1")
+
 	// FIXME: Ideally in testing.Verbose mode we'd turn on Terraform DEBUG
 	// logging, perhaps redirected to a separate fd other than stderr to avoid
 	// polluting it, and then propagate the log lines out into t.Log so that

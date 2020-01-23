@@ -2,9 +2,12 @@ package tftest
 
 import (
 	"fmt"
+	getter "github.com/hashicorp/go-getter"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"runtime"
+	"strings"
 )
 
 const subprocessCurrentSigil = "4acd63807899403ca4859f5bb948d2c6"
@@ -78,9 +81,14 @@ func InitHelper(config *Config) (*Helper, error) {
 			return nil, fmt.Errorf("failed to create temporary directory for -plugin-dir: %s", err)
 		}
 		currentExecPath := filepath.Join(thisPluginDir, config.PluginName)
-		err = os.Symlink(config.CurrentPluginExec, currentExecPath)
+		err = symlinkFile(config.CurrentPluginExec, currentExecPath)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create symlink at %s to %s: %s", currentExecPath, config.CurrentPluginExec, err)
+		}
+
+		err = symlinkAuxiliaryProviders(thisPluginDir)
+		if err != nil {
+			return nil, fmt.Errorf("failed to symlink auxiliary providers: %s", err)
 		}
 	} else {
 		return nil, fmt.Errorf("CurrentPluginExec is not set")
@@ -91,9 +99,14 @@ func InitHelper(config *Config) (*Helper, error) {
 			return nil, fmt.Errorf("failed to create temporary directory for previous -plugin-dir: %s", err)
 		}
 		prevExecPath := filepath.Join(prevPluginDir, config.PluginName)
-		err = os.Symlink(config.PreviousPluginExec, prevExecPath)
+		err = symlinkFile(config.PreviousPluginExec, prevExecPath)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create symlink at %s to %s: %s", prevExecPath, config.PreviousPluginExec, err)
+		}
+
+		err = symlinkAuxiliaryProviders(prevPluginDir)
+		if err != nil {
+			return nil, fmt.Errorf("failed to symlink auxiliary providers: %s", err)
 		}
 	}
 
@@ -105,6 +118,73 @@ func InitHelper(config *Config) (*Helper, error) {
 		thisPluginDir: thisPluginDir,
 		prevPluginDir: prevPluginDir,
 	}, nil
+}
+
+// symlinkAuxiliaryProviders discovers auxiliary provider binaries, used in
+// multi-provider tests, and symlinks them to the plugin directory.
+//
+// Auxiliary provider binaries should be included in the provider source code
+// directory, under the path terraform.d/plugins/$GOOS_$GOARCH/provider-name.
+//
+// The environment variable TF_ACC_PROVIDER_ROOT_DIR must be set to the path of
+// the provider source code directory root in order to use this feature.
+func symlinkAuxiliaryProviders(pluginDir string) error {
+	providerRootDir := os.Getenv("TF_ACC_PROVIDER_ROOT_DIR")
+
+	_, err := os.Stat(filepath.Join(providerRootDir, "terraform.d", "plugins"))
+	if err != nil {
+		fmt.Printf("No terraform.d/plugins directory found; continuing without auxiliary providers. Please set TF_ACC_PROVIDER_ROOT_DIR if you would like to run multi-provider tests.")
+		return nil
+	}
+
+	auxiliaryProviderDir := filepath.Join(providerRootDir, "terraform.d", "plugins", runtime.GOOS+"_"+runtime.GOARCH)
+
+	// If we can't os.Stat() terraform.d/plugins/$GOOS_$GOARCH, however,
+	// assume the omission was unintentional, and error.
+	_, err = os.Stat(auxiliaryProviderDir)
+	if err != nil {
+		return fmt.Errorf("error finding auxiliary provider dir %s: %s", auxiliaryProviderDir, err)
+	}
+
+	// now find all the providers in that dir and symlink them to the plugin dir
+	providers, err := ioutil.ReadDir(auxiliaryProviderDir)
+	if err != nil {
+		return fmt.Errorf("error reading auxiliary providers: %s", err)
+	}
+
+	zipDecompressor := new(getter.ZipDecompressor)
+
+	for _, provider := range providers {
+		providerFilename := provider.Name()
+		providerNameExt := filepath.Ext(providerFilename)
+		providerName := strings.TrimSuffix(providerFilename, providerNameExt)
+		providerPath := filepath.Join(auxiliaryProviderDir, providerName)
+		providerSymlinkPath := filepath.Join(pluginDir, providerName)
+
+		// exit early if we have already symlinked this provider
+		_, err := os.Stat(providerSymlinkPath)
+		if err == nil {
+			continue
+		}
+
+		// if filename ends in .zip, assume it is a zip and extract it
+		// otherwise assume it is a provider binary
+		if providerNameExt == ".zip" {
+			_, err = os.Stat(providerPath)
+			if err == nil {
+				// assume we have already extracted this provider zip
+			} else {
+				zipDecompressor.Decompress(providerPath, filepath.Join(auxiliaryProviderDir, providerFilename), false)
+			}
+		}
+
+		err = symlinkFile(providerPath, providerSymlinkPath)
+		if err != nil {
+			return fmt.Errorf("error symlinking auxiliary provider %s: %s", providerName, err)
+		}
+	}
+
+	return nil
 }
 
 // Close cleans up temporary files and directories created to support this

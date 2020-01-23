@@ -61,8 +61,8 @@ github.com/apparentlymart/go-dump v0.0.0-20190214190832-042adf3cf4a0 h1:MzVXffFU
 github.com/apparentlymart/go-dump v0.0.0-20190214190832-042adf3cf4a0/go.mod h1:oL81AME2rN47vu18xqj1S1jPIPuN7afo62yKTNn3XMM=
 github.com/apparentlymart/go-textseg v1.0.0 h1:rRmlIsPEEhUTIKQb7T++Nz/A5Q6C9IuX2wFoYVvnCs0=
 github.com/apparentlymart/go-textseg v1.0.0/go.mod h1:z96Txxhf3xSFMPmb5X/1W05FF/Nj9VFpLOpjS5yuumk=
-github.com/apparentlymart/terraform-plugin-test v1.1.0 h1:/2DA0xnGGzJW81tAajFeyMzq2pCry84gxa7+tWKmSFE=
-github.com/apparentlymart/terraform-plugin-test v1.1.0/go.mod h1:hYbuAV3amDbqrFlZLG1smC/QK5ZG2e1Jpq9m+Ug2qvk=
+github.com/apparentlymart/terraform-plugin-test v1.1.1-0.20200123164706-8580a6da9fad h1:frBdLTVlKeR/Y8TExhhUFtzU3BCWlNn68SYaJhbcKjc=
+github.com/apparentlymart/terraform-plugin-test v1.1.1-0.20200123164706-8580a6da9fad/go.mod h1:RMNC/x4YvOvW/e8AejwutaCfiaD2VWJDcl98soUlOMI=
 github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6/go.mod h1:grANhF5doyWs3UAsr3K4I6qtAmlQcZDesFNEHPZAzj8=
 github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310 h1:BUAU3CGlLvorLI26FmByPp2eC2qla6E1Tw+scpcg/to=
 github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
@@ -274,6 +274,8 @@ github.com/hashicorp/go-cleanhttp v0.5.1 h1:dH3aiDG9Jvb5r5+bYHsikaOUIpcM0xvgMXVo
 github.com/hashicorp/go-cleanhttp v0.5.1/go.mod h1:JpRdi6/HCYpAwUzNwuwqhbovhLtngrth3wmdIIUrZ80=
 github.com/hashicorp/go-getter v1.4.0 h1:ENHNi8494porjD0ZhIrjlAHnveSFhY7hvOJrV/fsKkw=
 github.com/hashicorp/go-getter v1.4.0/go.mod h1:7qxyCd8rBfcShwsvxgIguu4KbS3l8bUCwg2Umn7RjeY=
+github.com/hashicorp/go-getter v1.4.1 h1:3A2Mh8smGFcf5M+gmcv898mZdrxpseik45IpcyISLsA=
+github.com/hashicorp/go-getter v1.4.1/go.mod h1:7qxyCd8rBfcShwsvxgIguu4KbS3l8bUCwg2Umn7RjeY=
 github.com/hashicorp/go-hclog v0.0.0-20180709165350-ff2cf002a8dd/go.mod h1:9bjs9uLqI8l75knNv3lV1kA55veR+WUPSiKIWcQHudI=
 github.com/hashicorp/go-hclog v0.9.2 h1:CG6TE5H9/JXsFWJCfoIVpKFIkFe6ysEuHirp4DxCsHI=
 github.com/hashicorp/go-hclog v0.9.2/go.mod h1:5CU+agLiy3J7N7QjHK5d05KxGsuXiQLrjA0H7acj2lQ=
@@ -314,9 +316,8 @@ github.com/hashicorp/terraform-json v0.3.1 h1:vRiOLck4YX4UqzljVhdQKsVLixX4L+Pgnm
 github.com/hashicorp/terraform-json v0.3.1/go.mod h1:MdwQStcJb00ht55L/2YH0ypAO9RNtczJ1MaUlf+gJcg=
 github.com/hashicorp/terraform-plugin-sdk v1.0.0 h1:3AjuuV1LJKs1NlG+heUgqWN6/QCSx2kDhyS6K7F0fTw=
 github.com/hashicorp/terraform-plugin-sdk v1.0.0/go.mod h1:NuwtLpEpPsFaKJPJNGtMcn9vlhe6Ofe+Y6NqXhJgV2M=
-github.com/hashicorp/terraform-plugin-sdk v1.4.1 h1:REgN6WbySD6aIYdF6Uob3ic4eQkfh4NXSWU/casmgb4=
-github.com/hashicorp/terraform-plugin-sdk v1.4.2-0.20200113151231-51aaecd6b174 h1:Ow53W4mdD+WQiGORnzCa6vVnaHDUeaqmrxwaQjtznB0=
-github.com/hashicorp/terraform-plugin-sdk v1.4.2-0.20200113151231-51aaecd6b174/go.mod h1:oBBFHZErjD1If+8RhmfxAk6iAWOUzV14UkoCntSiuqA=
+github.com/hashicorp/terraform-plugin-sdk v1.4.2-0.20200123164737-df3f5c999a21 h1:+NWWDoeXhS6lWWRusFS3I9xs6qur7JV2fHTSXnfAMEw=
+github.com/hashicorp/terraform-plugin-sdk v1.4.2-0.20200123164737-df3f5c999a21/go.mod h1:n0XRNrDTxRy6tkxzQrdU/gfeQWSWz16lAq3rLHYZNtM=
 github.com/hashicorp/terraform-svchost v0.0.0-20191011084731-65d371908596 h1:hjyO2JsNZUKT1ym+FAdlBEkGPevazYsmVgIMw7dVELg=
 github.com/hashicorp/terraform-svchost v0.0.0-20191011084731-65d371908596/go.mod h1:kNDNcF7sN4DocDLBkQYz73HGKwN1ANB1blq4lIYLYvg=
 github.com/hashicorp/vault v0.10.4/go.mod h1:KfSyffbKxoVyspOdlaGVjIuwLobi07qD1bAbosPMpP0=

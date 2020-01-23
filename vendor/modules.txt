@@ -32,7 +32,7 @@ github.com/agext/levenshtein
 github.com/apparentlymart/go-cidr/cidr
 # github.com/apparentlymart/go-textseg v1.0.0
 github.com/apparentlymart/go-textseg/textseg
-# github.com/apparentlymart/terraform-plugin-test v1.1.0
+# github.com/apparentlymart/terraform-plugin-test v1.1.1-0.20200123164706-8580a6da9fad
 github.com/apparentlymart/terraform-plugin-test
 # github.com/armon/go-radix v1.0.0
 github.com/armon/go-radix
@@ -271,7 +271,7 @@ github.com/hashicorp/aws-sdk-go-base
 github.com/hashicorp/errwrap
 # github.com/hashicorp/go-cleanhttp v0.5.1
 github.com/hashicorp/go-cleanhttp
-# github.com/hashicorp/go-getter v1.4.0
+# github.com/hashicorp/go-getter v1.4.1
 github.com/hashicorp/go-getter
 github.com/hashicorp/go-getter/helper/url
 # github.com/hashicorp/go-hclog v0.9.2
@@ -316,7 +316,7 @@ github.com/hashicorp/logutils
 github.com/hashicorp/terraform-config-inspect/tfconfig
 # github.com/hashicorp/terraform-json v0.3.1
 github.com/hashicorp/terraform-json
-# github.com/hashicorp/terraform-plugin-sdk v1.4.2-0.20200113151231-51aaecd6b174
+# github.com/hashicorp/terraform-plugin-sdk v1.4.2-0.20200123164737-df3f5c999a21
 github.com/hashicorp/terraform-plugin-sdk/acctest
 github.com/hashicorp/terraform-plugin-sdk/helper/acctest
 github.com/hashicorp/terraform-plugin-sdk/helper/customdiff
